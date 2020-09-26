@@ -1,0 +1,61 @@
+#%RAML 1.0
+title: Hello world # required title
+
+/jde-ping:
+  get:
+   responses:
+    200:
+     body:
+      application/json:
+       example: | # example of how a response looks
+        {
+           "message": "OK"
+        }
+/health-check:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: | 
+              {
+                "message": "All good"
+              }
+/usage-stats: 
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                  "appEnvironment": "Dev",
+                  "usageStats": {
+                      "ecEone": {},
+                      "memory": {
+                          "Mem": "985        906         79          0         12        218",
+                          "Swap": "255          0        255",
+                          "-/+ buffers/cache": "675        310"
+                      },
+                      "linuxSystem": {
+                          "VERSION_ID": "2018.03",
+                          "HOME_URL": "http://aws.amazon.com/amazon-linux-ami/",
+                          "ID_LIKE": "rhel fedora",
+                          "VERSION": "2018.03",
+                          "PRETTY_NAME": "Amazon Linux AMI 2018.03",
+                          "ID": "amzn",
+                          "CPE_NAME": "cpe:/o:amazon:linux:2018.03:ga",
+                          "ANSI_COLOR": "0;33",
+                          "NAME": "Amazon Linux AMI"
+                      },
+                      "JVM memory": {
+                          "heapUsed": "189645720",
+                          "heapMaxSize": "490143744",
+                          "heapSize": "245104640",
+                          "heapFreeSize": "55458920"
+                      },
+                      "uptime": {
+                          "uptime": " 20:44:06 up 2 min,  0 users,  load average: 0.66, 0.31, 0.12"
+                      }
+                  }
+              }        

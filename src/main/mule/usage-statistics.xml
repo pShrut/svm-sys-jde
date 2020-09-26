@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	
+    <flow name="usage-statistics">
+        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="e3513e51-f02e-48fd-86fc-b27b7196d514">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+import java!com::svm::util::UsageStatistics
+---
+ {
+ 	appEnvironment:  '${env.name}'
+ }
+ ++	UsageStatistics::getUsageStatistics()
+ 
+ ]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="Logger - Usage statistics detail" doc:id="3cc16a4b-fe01-4ec9-85b3-de400daa082d" message="Usage statistics detail:  #[payload]"/>
+    </flow>	
+	
+    <flow name="health-check">
+  		<logger level="INFO" doc:name="Logger" doc:id="a2d6417a-b9a7-45f5-bb28-9b78f6351d97" message="Just ping to check health..."/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="aa045204-b3b9-43c2-82fc-b0fe6ad5f380">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "All good in " ++ '${env.name}'
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="51d5d56d-99d7-434b-ab4b-f049337b6ef2" message="Done ping to check health..."/>
+    </flow> 
+
+	
+	</mule>	
